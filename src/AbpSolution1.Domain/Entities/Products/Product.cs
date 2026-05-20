@@ -4,7 +4,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace AbpSolution1.Entities.Products
 {
-    public class Product : FullAuditedAggregateRoot<int>
+    public class Product : FullAuditedEntity<int>
     {
         public string NameAr { get; set; }
         public string DescriptionAr { get; set; }
@@ -24,10 +24,7 @@ namespace AbpSolution1.Entities.Products
             {
                 throw new ArgumentException("Price must be greater than zero");
             }
-            else
-            {
-                Price = price;
-            }
+            Price = price;
         }
 
         public void setStock(int stock)
@@ -36,10 +33,7 @@ namespace AbpSolution1.Entities.Products
             {
                 throw new ArgumentException("Stock cannot be negative");
             }
-            else
-            {
-                Stock = stock;
-            }
+            Stock = stock;
 
         }
     }

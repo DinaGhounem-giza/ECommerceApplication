@@ -2,7 +2,7 @@
 
 namespace AbpSolution1.Entities.Categories
 {
-    public class SubCategory : FullAuditedAggregateRoot<int>
+    public class SubCategory : FullAuditedEntity<int>
     {
         public string NameAr { get; set; }
         public string NameEn { get; set; }
