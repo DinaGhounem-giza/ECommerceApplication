@@ -19,6 +19,12 @@ namespace AbpSolution1.EntityFrameworkCore.Configurations
             builder.Property(x => x.NameEn)
                    .IsRequired()
                    .HasMaxLength(AbpSolution1Consts.MaxNameLength);
+
+            builder.HasOne(x => x.ParentCategory)
+                   .WithMany()
+                   .HasForeignKey(x => x.ParentCategoryId)
+                   .OnDelete(DeleteBehavior.Restrict)
+                   .IsRequired(false);
         }
     }
 }

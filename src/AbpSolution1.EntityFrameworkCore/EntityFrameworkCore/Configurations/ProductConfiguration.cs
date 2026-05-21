@@ -30,9 +30,9 @@ namespace AbpSolution1.EntityFrameworkCore.Configurations
                 .IsRequired();
 
 
-            builder.HasOne(x => x.SubCategory)
+            builder.HasOne(x => x.Category)
                 .WithMany()
-                .HasForeignKey(x => x.SubCategoryId);
+                .HasForeignKey(x => x.CategoryId);
         }
     }
 }

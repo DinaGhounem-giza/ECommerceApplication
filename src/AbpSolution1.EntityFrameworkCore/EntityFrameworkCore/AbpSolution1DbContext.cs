@@ -26,7 +26,6 @@ public class AbpSolution1DbContext :
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
     public DbSet<Category> Categories { get; set; }
-    public DbSet<SubCategory> SubCategories { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetails> OrderDetails { get; set; }

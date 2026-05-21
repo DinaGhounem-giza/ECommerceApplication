@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Domain.Entities.Auditing;
+﻿using System.Collections.Generic;
+using Volo.Abp.Domain.Entities.Auditing;
 
 namespace AbpSolution1.Entities.Categories
 {
@@ -6,6 +7,8 @@ namespace AbpSolution1.Entities.Categories
     {
         public string NameAr { get; set; }
         public string NameEn { get; set; }
+        public int? ParentCategoryId { get; set; }
+        public Category? ParentCategory { get; set; }
 
         public Category()
         {

@@ -13,12 +13,12 @@ namespace AbpSolution1.Entities.Products
         public decimal Price { get; private set; }
         public int Stock { get; private set; }
 
-        public int SubCategoryId { get; set; }
-        public SubCategory SubCategory { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
         public Product() { }
 
-        public void setPrice(decimal price)
+        public void SetPrice(decimal price)
         {
             if (price <= 0)
             {
@@ -27,7 +27,7 @@ namespace AbpSolution1.Entities.Products
             Price = price;
         }
 
-        public void setStock(int stock)
+        public void SetStock(int stock)
         {
             if (stock < 0)
             {
