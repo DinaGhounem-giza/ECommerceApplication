@@ -9,6 +9,7 @@ using AbpSolution1.Products;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Users;
 
 public class OrderAppService : ApplicationService
 {
@@ -16,21 +17,38 @@ public class OrderAppService : ApplicationService
     private readonly IRepository<OrderDetails, Guid> _orderDetailsRepository;
     private readonly IRepository<Product, int> _productRepository;
     private readonly OrderManager _orderManager;
+    private readonly ICurrentUser _currentUser;
 
-    public OrderAppService(IRepository<Order, Guid> orderRepository,
+    public OrderAppService(
+        IRepository<Order, Guid> orderRepository,
         IRepository<OrderDetails, Guid> orderDetailsRepository,
-        IRepository<Product,int> productRepository,
-        OrderManager orderManager)
+        IRepository<Product, int> productRepository,
+        OrderManager orderManager,
+        ICurrentUser currentUser)
     {
         _orderRepository = orderRepository;
         _orderDetailsRepository = orderDetailsRepository;
         _productRepository = productRepository;
         _orderManager = orderManager;
+        _currentUser = currentUser;
     }
 
+    [Authorize(AbpSolution1Permissions.Orders.View)]
     public async Task<List<OrderDto>> GetOrdersAsync()
     {
-        var orders = await _orderRepository.GetListAsync();
+        var isAdmin = _currentUser.IsInRole("SystemAdmin");
+
+        List<Order> orders;
+        if (isAdmin)
+        {
+            orders = await _orderRepository.GetListAsync();
+        }
+        else
+        {
+            var customerId = _currentUser.Id.Value;
+            orders = await _orderRepository.GetListAsync(o => o.CreatorId == customerId);
+        }
+
         var orderDtos = new List<OrderDto>();
         foreach (var order in orders)
         {
@@ -61,6 +79,8 @@ public class OrderAppService : ApplicationService
         return orderDtos;
     }
 
+
+    [Authorize(AbpSolution1Permissions.Orders.Create)]
     public async Task<bool> CreateOrderAsync(CreateUpdateOrderDto input)
     {
         var order = new Order

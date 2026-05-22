@@ -9,9 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Identity;
 using Volo.Abp.MultiTenancy;
-using AbpSolution1.MultiTenancy;
 
 namespace AbpSolution1.Data;
 
@@ -65,9 +63,9 @@ public class AbpSolution1DbMigrationService : ITransientDependency
     private async Task SeedDataAsync()
     {
         await _dataSeeder.SeedAsync(new DataSeedContext()
-            .WithProperty(IdentityDataSeedContributor.AdminEmailPropertyName,
+            .WithProperty("AdminEmail",
                 AbpSolution1Consts.AdminEmailDefaultValue)
-            .WithProperty(IdentityDataSeedContributor.AdminPasswordPropertyName,
+            .WithProperty("AdminPassword",
                 AbpSolution1Consts.AdminPasswordDefaultValue)
         );
     }
