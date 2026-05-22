@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AbpSolution1.DTOs.Orders;
 using AbpSolution1.Orders;
+using AbpSolution1.Permissions;
+using AbpSolution1.Products;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
@@ -11,23 +14,18 @@ public class OrderAppService : ApplicationService
 {
     private readonly IRepository<Order, Guid> _orderRepository;
     private readonly IRepository<OrderDetails, Guid> _orderDetailsRepository;
+    private readonly IRepository<Product, int> _productRepository;
     private readonly OrderManager _orderManager;
 
     public OrderAppService(IRepository<Order, Guid> orderRepository,
-        IRepository<OrderDetails, Guid> orderDetailsRepository, OrderManager orderManager)
+        IRepository<OrderDetails, Guid> orderDetailsRepository,
+        IRepository<Product,int> productRepository,
+        OrderManager orderManager)
     {
         _orderRepository = orderRepository;
         _orderDetailsRepository = orderDetailsRepository;
+        _productRepository = productRepository;
         _orderManager = orderManager;
-    }
-
-    public async Task<OrderDto> GetOrderAsync(Guid id)
-    {
-        var order = await _orderRepository.GetAsync(id);
-        var orderDetails = await _orderDetailsRepository.GetListAsync(od => od.OrderId == id);
-        var orderDto = ObjectMapper.Map<Order, OrderDto>(order);
-        orderDto.Details = orderDetails.Select(od => ObjectMapper.Map<OrderDetails, OrderDetailsDto>(od)).ToList();
-        return orderDto;
     }
 
     public async Task<List<OrderDto>> GetOrdersAsync()
@@ -37,8 +35,27 @@ public class OrderAppService : ApplicationService
         foreach (var order in orders)
         {
             var orderDetails = await _orderDetailsRepository.GetListAsync(od => od.OrderId == order.Id);
-            var orderDto = ObjectMapper.Map<Order, OrderDto>(order);
-            orderDto.Details = orderDetails.Select(od => ObjectMapper.Map<OrderDetails, OrderDetailsDto>(od)).ToList();
+            var orderDto = new OrderDto
+            {
+                OrderDate = order.OrderDate,
+                OrderPrice = order.OrderPrice
+            };
+
+            List<OrderDetailsDto> detailsDtos = new List<OrderDetailsDto>();
+
+            foreach (var od in orderDetails)
+            {
+                var product = await _productRepository.GetAsync(od.ProductId);
+                var detailsDto = new OrderDetailsDto
+                {
+                    ProductNameAr = product.NameAr,
+                    ProductNameEn = product.NameEn,
+                    Quantity = od.Quantity
+                };
+                detailsDtos.Add(detailsDto);
+            }
+
+            orderDto.Details = detailsDtos;
             orderDtos.Add(orderDto);
         }
         return orderDtos;

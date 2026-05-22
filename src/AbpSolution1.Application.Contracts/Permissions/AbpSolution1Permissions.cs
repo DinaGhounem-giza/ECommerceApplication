@@ -5,14 +5,10 @@ public static class AbpSolution1Permissions
     public const string GroupName = "AbpSolution1";
 
 
-    public static class Books
+    public static class Orders
     {
-        public const string Default = GroupName + ".Books";
+        public const string Default = GroupName + ".Orders";
         public const string Create = Default + ".Create";
-        public const string Edit = Default + ".Edit";
-        public const string Delete = Default + ".Delete";
+        public const string View = Default + ".View";
     }
-    
-    //Add your own permission names. Example:
-    //public const string MyPermission1 = GroupName + ".MyPermission1";
 }
