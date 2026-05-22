@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using AbpSolution1.Categories;
 using AbpSolution1.DTOs.Categories;
-using AbpSolution1.Entities.Categories;
 using Riok.Mapperly.Abstractions;
 using Volo.Abp.Mapperly;
 
@@ -18,8 +16,7 @@ namespace AbpSolution1.Mappings
     }
 
     [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-    public partial class CreateUpdateCategoryDtoToCategoryMapper : MapperBase<CreateUpdateCategoryDto, Category
-        >
+    public partial class CreateUpdateCategoryDtoToCategoryMapper : MapperBase<CreateUpdateCategoryDto, Category>
     {
         public override partial Category Map(CreateUpdateCategoryDto source);
 

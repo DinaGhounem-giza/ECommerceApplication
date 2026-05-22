@@ -1,4 +1,4 @@
-﻿using AbpSolution1.Entities.Products;
+﻿using AbpSolution1.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Volo.Abp.EntityFrameworkCore.Modeling;

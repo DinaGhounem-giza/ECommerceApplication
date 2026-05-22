@@ -1,6 +1,6 @@
-using AbpSolution1.Entities.Categories;
-using AbpSolution1.Entities.Orders;
-using AbpSolution1.Entities.Products;
+using AbpSolution1.Categories;
+using AbpSolution1.Orders;
+using AbpSolution1.Products;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;

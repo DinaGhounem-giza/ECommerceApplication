@@ -1,8 +1,8 @@
 ﻿using System;
-using AbpSolution1.Entities.Products;
+using AbpSolution1.Products;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace AbpSolution1.Entities.Orders
+namespace AbpSolution1.Orders
 {
     public class OrderDetails : AuditedEntity<Guid>
     {
@@ -12,7 +12,15 @@ namespace AbpSolution1.Entities.Orders
         public Guid OrderId { get; set; }
         public Order Order { get; set; }
 
-        public void setQuantity(int quantity)
+        public OrderDetails(int productId,int quantity)
+        {
+            ProductId = productId;
+            SetQuantity(quantity);
+
+        }
+
+
+        public void SetQuantity(int quantity)
         {
             if(quantity <= 0)
             {

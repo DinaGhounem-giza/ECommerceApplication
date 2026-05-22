@@ -1,8 +1,8 @@
 ﻿using System;
-using AbpSolution1.Entities.Categories;
+using AbpSolution1.Categories;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace AbpSolution1.Entities.Products
+namespace AbpSolution1.Products
 {
     public class Product : FullAuditedEntity<int>
     {
@@ -16,7 +16,18 @@ namespace AbpSolution1.Entities.Products
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public Product() { }
+
+
+        public Product(string nameAr, string descriptionAr, string nameEn, string descriptionEn, decimal price, int stock, int categoryId)
+        {
+            NameAr = nameAr;
+            DescriptionAr = descriptionAr;
+            NameEn = nameEn;
+            DescriptionEn = descriptionEn;
+            SetPrice(price);
+            SetStock(stock);
+            CategoryId = categoryId;
+        }
 
         public void SetPrice(decimal price)
         {

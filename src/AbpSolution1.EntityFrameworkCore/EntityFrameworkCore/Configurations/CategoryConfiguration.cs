@@ -1,4 +1,4 @@
-﻿using AbpSolution1.Entities.Categories;
+﻿using AbpSolution1.Categories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Volo.Abp.EntityFrameworkCore.Modeling;

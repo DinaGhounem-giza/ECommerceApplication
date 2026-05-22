@@ -1,5 +1,4 @@
 ﻿using AbpSolution1.DTOs.Categories;
-using AbpSolution1.Entities.Categories;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
