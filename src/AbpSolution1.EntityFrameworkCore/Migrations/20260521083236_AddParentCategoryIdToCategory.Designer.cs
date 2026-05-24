@@ -4,6 +4,7 @@ using AbpSolution1.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace AbpSolution1.Migrations
 {
     [DbContext(typeof(AbpSolution1DbContext))]
-    partial class AbpSolution1DbContextModelSnapshot : ModelSnapshot
+    [Migration("20260521083236_AddParentCategoryIdToCategory")]
+    partial class AddParentCategoryIdToCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,7 +27,7 @@ namespace AbpSolution1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AbpSolution1.Categories.Category", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Categories.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +85,7 @@ namespace AbpSolution1.Migrations
                     b.ToTable("Categories", "ECommerce");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Orders.Order", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Orders.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -140,7 +143,7 @@ namespace AbpSolution1.Migrations
                     b.ToTable("Orders", "ECommerce");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Orders.OrderDetails", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Orders.OrderDetails", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -184,7 +187,7 @@ namespace AbpSolution1.Migrations
                     b.ToTable("OrderDetails", "ECommerce");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Products.Product", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Products.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2132,9 +2135,9 @@ namespace AbpSolution1.Migrations
                     b.ToTable("AbpSettingDefinitions", (string)null);
                 });
 
-            modelBuilder.Entity("AbpSolution1.Categories.Category", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Categories.Category", b =>
                 {
-                    b.HasOne("AbpSolution1.Categories.Category", "ParentCategory")
+                    b.HasOne("AbpSolution1.Entities.Categories.Category", "ParentCategory")
                         .WithMany()
                         .HasForeignKey("ParentCategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -2142,19 +2145,19 @@ namespace AbpSolution1.Migrations
                     b.Navigation("ParentCategory");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Orders.OrderDetails", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Orders.OrderDetails", b =>
                 {
-                    b.HasOne("AbpSolution1.Orders.Order", "Order")
+                    b.HasOne("AbpSolution1.Entities.Orders.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AbpSolution1.Orders.Order", null)
+                    b.HasOne("AbpSolution1.Entities.Orders.Order", null)
                         .WithMany("Details")
                         .HasForeignKey("OrderId1");
 
-                    b.HasOne("AbpSolution1.Products.Product", "Product")
+                    b.HasOne("AbpSolution1.Entities.Products.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2165,9 +2168,9 @@ namespace AbpSolution1.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Products.Product", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Products.Product", b =>
                 {
-                    b.HasOne("AbpSolution1.Categories.Category", "Category")
+                    b.HasOne("AbpSolution1.Entities.Categories.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2374,7 +2377,7 @@ namespace AbpSolution1.Migrations
                         .HasForeignKey("AuthorizationId");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Orders.Order", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Orders.Order", b =>
                 {
                     b.Navigation("Details");
                 });

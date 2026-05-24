@@ -219,7 +219,41 @@ public class AbpSolution1HttpApiHostModule : AbpModule
             options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "AbpSolution1 API", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
+                options.DocInclusionPredicate((docName, description) =>
+                {
+                    // Hide ABP built-in modules APIs
+                    if (description.ActionDescriptor.RouteValues["controller"] != null)
+                    {
+                        var controllerName = description.ActionDescriptor.RouteValues["controller"];
+
+                        // List of ABP module controllers to hide
+                        var abpControllers = new[]
+                        {
+                            "AbpApiDefinition",
+                            "AbpApplicationConfiguration",
+                            "AbpApplicationLocalization",
+                            "AbpTenant",
+                            "Profile",
+                            "Login",
+                            "Logout",
+                            "Features",
+                            "Permissions",
+                            "Role",
+                            "User",
+                            "Account",
+                            "EmailSettings",
+                            "SendTestEmail"
+                        };
+
+                        // Hide if controller is in the ABP controllers list
+                        if (abpControllers.Contains(controllerName))
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                });
                 options.CustomSchemaIds(type => type.FullName);
             });
     }

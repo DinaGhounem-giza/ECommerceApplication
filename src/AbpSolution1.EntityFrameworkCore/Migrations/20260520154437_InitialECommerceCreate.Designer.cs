@@ -4,6 +4,7 @@ using AbpSolution1.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace AbpSolution1.Migrations
 {
     [DbContext(typeof(AbpSolution1DbContext))]
-    partial class AbpSolution1DbContextModelSnapshot : ModelSnapshot
+    [Migration("20260520154437_InitialECommerceCreate")]
+    partial class InitialECommerceCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,7 +27,7 @@ namespace AbpSolution1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AbpSolution1.Categories.Category", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Categories.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,17 +75,70 @@ namespace AbpSolution1.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("ParentCategoryId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories", "ECommerce");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Orders.Order", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Categories.SubCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SubCategories", "ECommerce");
+                });
+
+            modelBuilder.Entity("AbpSolution1.Entities.Orders.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -140,7 +196,7 @@ namespace AbpSolution1.Migrations
                     b.ToTable("Orders", "ECommerce");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Orders.OrderDetails", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Orders.OrderDetails", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -184,16 +240,13 @@ namespace AbpSolution1.Migrations
                     b.ToTable("OrderDetails", "ECommerce");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Products.Product", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Products.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2")
@@ -251,9 +304,12 @@ namespace AbpSolution1.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
+                    b.Property<int>("SubCategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("SubCategoryId");
 
                     b.ToTable("Products", "ECommerce");
                 });
@@ -2132,29 +2188,30 @@ namespace AbpSolution1.Migrations
                     b.ToTable("AbpSettingDefinitions", (string)null);
                 });
 
-            modelBuilder.Entity("AbpSolution1.Categories.Category", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Categories.SubCategory", b =>
                 {
-                    b.HasOne("AbpSolution1.Categories.Category", "ParentCategory")
+                    b.HasOne("AbpSolution1.Entities.Categories.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("ParentCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("ParentCategory");
+                    b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Orders.OrderDetails", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Orders.OrderDetails", b =>
                 {
-                    b.HasOne("AbpSolution1.Orders.Order", "Order")
+                    b.HasOne("AbpSolution1.Entities.Orders.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AbpSolution1.Orders.Order", null)
+                    b.HasOne("AbpSolution1.Entities.Orders.Order", null)
                         .WithMany("Details")
                         .HasForeignKey("OrderId1");
 
-                    b.HasOne("AbpSolution1.Products.Product", "Product")
+                    b.HasOne("AbpSolution1.Entities.Products.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2165,15 +2222,15 @@ namespace AbpSolution1.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Products.Product", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Products.Product", b =>
                 {
-                    b.HasOne("AbpSolution1.Categories.Category", "Category")
+                    b.HasOne("AbpSolution1.Entities.Categories.SubCategory", "SubCategory")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("SubCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
@@ -2374,7 +2431,7 @@ namespace AbpSolution1.Migrations
                         .HasForeignKey("AuthorizationId");
                 });
 
-            modelBuilder.Entity("AbpSolution1.Orders.Order", b =>
+            modelBuilder.Entity("AbpSolution1.Entities.Orders.Order", b =>
                 {
                     b.Navigation("Details");
                 });
