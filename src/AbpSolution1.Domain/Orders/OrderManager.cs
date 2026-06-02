@@ -34,12 +34,14 @@ namespace AbpSolution1.Orders
 
                 if (product == null)
                 {
-                    throw new BusinessException("Product Not Found");
+                    throw new BusinessException()
+                        .WithData("Reason", "Product Not Found");
                 }
 
                 if (product.Stock < orderDetail.Quantity)
                 {
-                    throw new BusinessException("Stock is less than the required quantity");
+                    throw new BusinessException()
+                        .WithData("Reason", "Stock is less than the required quantity"); ;
                 }
             }
         }
@@ -83,7 +85,8 @@ namespace AbpSolution1.Orders
 
             if (order.Details == null || !order.Details.Any())
             {
-                throw new BusinessException("Order must have at least one item.");
+                throw new BusinessException()
+                    .WithData("Reason", "Order must have at least one item.");
             }
 
             await ValidateOrderStockAsync(order.Details);

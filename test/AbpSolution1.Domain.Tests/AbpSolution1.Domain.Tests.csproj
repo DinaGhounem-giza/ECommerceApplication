@@ -10,11 +10,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AbpSolution1.Domain\AbpSolution1.Domain.csproj" />
+    <ProjectReference Include="..\..\src\AbpSolution1.EntityFrameworkCore\AbpSolution1.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\AbpSolution1.TestBase\AbpSolution1.TestBase.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="10.3.0" />
   </ItemGroup>
 
 </Project>
