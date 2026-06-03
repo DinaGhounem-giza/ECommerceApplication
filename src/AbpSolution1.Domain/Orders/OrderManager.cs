@@ -102,11 +102,14 @@ namespace AbpSolution1.Orders
     
         public async Task SaveOrder(Order order)
         {
-            await _orderRepository.InsertAsync(order);
+            var orderDetails = order.Details.ToList();
+            order.Details.Clear();
+            
+            await _orderRepository.InsertAsync(order, autoSave: true);
 
-            order.Details.ForEach(details => details.OrderId = order.Id);
+            orderDetails.ForEach(details => details.OrderId = order.Id);
 
-            await _orderDetailsRepository.InsertManyAsync(order.Details, autoSave:true);
+            await _orderDetailsRepository.InsertManyAsync(orderDetails, autoSave: true);
         }
     }
 }
