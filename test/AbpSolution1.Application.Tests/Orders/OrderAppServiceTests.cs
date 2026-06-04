@@ -78,7 +78,7 @@ public class OrderAppServiceTests : AbpSolution1ApplicationTestBase<AbpSolution1
         {
             var orders = await _orderRepository.GetListAsync();
             orders.ShouldNotBeEmpty();
-            orders.First().OrderPrice.ShouldBe(2000m); // 1000 * 2
+            orders.First().OrderPrice.ShouldBe(2000m); 
         });
     }
 

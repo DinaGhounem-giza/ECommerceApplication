@@ -55,6 +55,7 @@ public class OrderAppService : ApplicationService
             var orderDetails = await _orderDetailsRepository.GetListAsync(od => od.OrderId == order.Id);
             var orderDto = new OrderDto
             {
+                Id = order.Id,
                 OrderDate = order.OrderDate,
                 OrderPrice = order.OrderPrice
             };
